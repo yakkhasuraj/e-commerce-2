@@ -26,4 +26,18 @@ export const theme = createTheme({
   typography: {
     fontFamily: inter.style.fontFamily,
   },
+  components: {
+    MuiButtonGroup: {
+      styleOverrides: {
+        firstButton: {
+          borderRadius: 4,
+          border: "none",
+        },
+        lastButton: {
+          borderRadius: 4,
+          border: "none",
+        },
+      },
+    },
+  },
 });
