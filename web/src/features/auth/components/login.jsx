@@ -15,6 +15,7 @@ import { Controller, useForm } from "react-hook-form";
 import { MdOutlineEmail } from "react-icons/md";
 import { TbPassword } from "react-icons/tb";
 import { loginValidator } from "../validators";
+import { toast } from "react-toastify";
 
 export const Login = () => {
   const {
@@ -32,6 +33,7 @@ export const Login = () => {
 
   const onSubmit = (data) => {
     console.log(data);
+    toast("Logged in successfully", { type: "success" });
   };
 
   return (

@@ -11,17 +11,15 @@ import {
   InputAdornment,
   Snackbar,
   TextField,
-  snackbarClasses,
 } from "@mui/material";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { MdOutlineEmail, MdPersonOutline } from "react-icons/md";
 import { TbPassword } from "react-icons/tb";
 import { signupValidator } from "../validators";
-import { useState } from "react";
+import { toast } from "react-toastify";
 
 export const Signup = () => {
-  const [snackbar, setSnackbar] = useState({ open: false, type: "" });
-
   const {
     control,
     formState: { errors, isSubmitting },
@@ -41,15 +39,9 @@ export const Signup = () => {
 
   const termsAndConditions = watch("termsAndConditions");
 
-  const handleSnackbar =
-    (type = "") =>
-    () => {
-      setSnackbar({ open: !snackbar.open, type });
-    };
-
   const onSubmit = (data) => {
-    console.log("onSubmit", data);
-    handleSnackbar("success")();
+    console.log(data);
+    toast("User created successfully", { type: "success" });
   };
 
   return (
@@ -196,18 +188,6 @@ export const Signup = () => {
           Submit
         </LoadingButton>
       </form>
-
-      <Snackbar open={snackbar.open} autoHideDuration={6000}>
-        <Alert
-          severity={snackbar.type === "success" ? "success" : "error"}
-          variant="filled"
-          onClose={handleSnackbar()}
-        >
-          {snackbar.type === "success"
-            ? "User created successfully"
-            : "User cannot be created"}
-        </Alert>
-      </Snackbar>
     </>
   );
 };
