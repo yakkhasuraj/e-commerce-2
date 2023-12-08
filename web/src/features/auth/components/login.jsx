@@ -10,6 +10,7 @@ import {
   InputAdornment,
   TextField,
 } from "@mui/material";
+import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
 import { MdOutlineEmail } from "react-icons/md";
 import { TbPassword } from "react-icons/tb";
@@ -44,7 +45,7 @@ export const Login = () => {
             label="Email"
             variant="outlined"
             type="email"
-            error={errors.email}
+            error={Boolean(errors.email)}
             helperText={errors.email?.message}
             {...field}
             InputProps={{
@@ -67,7 +68,7 @@ export const Login = () => {
             label="Password"
             variant="outlined"
             type="password"
-            error={errors.password}
+            error={Boolean(errors.password)}
             helperText={errors.password?.message}
             {...field}
             InputProps={{
@@ -105,6 +106,10 @@ export const Login = () => {
       >
         Submit
       </LoadingButton>
+
+      <Link href="/auth/signup" className="text-primary-200">
+        Create an account?
+      </Link>
     </form>
   );
 };
