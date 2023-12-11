@@ -1,5 +1,5 @@
 import { createRandomProducts } from "@/data";
-import { ProductPurchase, QuantitySelector } from "@/features/products";
+import { QuantitySelector } from "@/features/products";
 import {
   Avatar,
   Box,
@@ -21,8 +21,6 @@ const ProductDetailPage = () => {
           <Avatar src={product.image} className="w-24 h-24" variant="square" />
           <Avatar src={product.image} className="w-96 h-96" variant="square" />
         </Box>
-
-        <ProductPurchase />
       </Grid>
 
       <Grid md={8} className="flex flex-col gap-4">
@@ -37,7 +35,7 @@ const ProductDetailPage = () => {
         <Divider />
         <Box className="flex flex-col gap-2">
           <Typography variant="h6">Quantity</Typography>
-          <QuantitySelector />
+          <QuantitySelector product={product} />
         </Box>
         <Divider />
         <Box className="flex flex-col gap-2">

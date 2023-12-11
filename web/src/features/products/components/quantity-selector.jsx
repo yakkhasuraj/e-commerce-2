@@ -1,10 +1,11 @@
 "use client";
 
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { Box, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { useState } from "react";
 import { HiMinusSm, HiOutlinePlusSm } from "react-icons/hi";
+import { ProductPurchase } from "./product-purchase";
 
-export const QuantitySelector = () => {
+export const QuantitySelector = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
 
   const handleToggle = (_, value) => {
@@ -18,18 +19,22 @@ export const QuantitySelector = () => {
   };
 
   return (
-    <ToggleButtonGroup exclusive onChange={handleToggle}>
-      <ToggleButton value="plus" className="rounded-s-full border-r-0">
-        <HiOutlinePlusSm />
-      </ToggleButton>
+    <Box className="flex flex-col gap-4">
+      <ToggleButtonGroup exclusive onChange={handleToggle}>
+        <ToggleButton value="plus" className="rounded-s-full border-r-0">
+          <HiOutlinePlusSm />
+        </ToggleButton>
 
-      <ToggleButton value="quantity" disabled className="border-r-0 w-12">
-        {quantity}
-      </ToggleButton>
+        <ToggleButton value="quantity" disabled className="border-r-0 w-12">
+          {quantity}
+        </ToggleButton>
 
-      <ToggleButton value="minus" className="rounded-e-full border-l-0">
-        <HiMinusSm />
-      </ToggleButton>
-    </ToggleButtonGroup>
+        <ToggleButton value="minus" className="rounded-e-full border-l-0">
+          <HiMinusSm />
+        </ToggleButton>
+      </ToggleButtonGroup>
+
+      <ProductPurchase product={product} quantity={quantity} />
+    </Box>
   );
 };
