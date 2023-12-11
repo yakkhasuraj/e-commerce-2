@@ -1,5 +1,7 @@
 import { ThemeRegistry } from "@/libs";
+import { ToastContainer } from "react-toastify";
 
+import "react-toastify/dist/ReactToastify.min.css";
 import "./globals.css";
 
 export const metadata = {
@@ -12,6 +14,8 @@ const RootLayout = ({ children }) => {
     <html lang="en">
       <body id="web">
         <ThemeRegistry>{children}</ThemeRegistry>
+
+        <ToastContainer position="bottom-right" draggable={false} limit={3} />
       </body>
     </html>
   );

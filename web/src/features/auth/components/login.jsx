@@ -16,8 +16,13 @@ import { MdOutlineEmail } from "react-icons/md";
 import { TbPassword } from "react-icons/tb";
 import { loginValidator } from "../validators";
 import { toast } from "react-toastify";
+import { useCookie } from "react-use";
+import { ACCESS_TOKEN } from "@/configs";
+import { useRouter } from "next/navigation";
 
 export const Login = () => {
+  const [, updateCookie] = useCookie(ACCESS_TOKEN);
+  const router = useRouter();
   const {
     control,
     formState: { errors, isSubmitting },
@@ -32,8 +37,15 @@ export const Login = () => {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
-    toast("Logged in successfully", { type: "success" });
+    try {
+      if (data.email !== "john.doe@test.com" || data.password !== "12345678")
+        throw new Error("Logged in failed");
+      updateCookie(data, { secure: true, sameSite: "Strict", expires: 1 });
+      toast("Logged in successfully", { type: "success" });
+      router.replace("/");
+    } catch (error) {
+      toast("Logged in failed", { type: "error" });
+    }
   };
 
   return (

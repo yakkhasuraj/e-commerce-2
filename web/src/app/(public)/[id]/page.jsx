@@ -1,17 +1,14 @@
 import { createRandomProducts } from "@/data";
-import { QuantitySelector } from "@/features/products";
+import { ProductPurchase, QuantitySelector } from "@/features/products";
 import {
   Avatar,
   Box,
-  Button,
   ButtonGroup,
-  Checkbox,
   Divider,
   IconButton,
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import { MdAddShoppingCart } from "react-icons/md";
 import { LiaFacebookMessenger, LiaWhatsapp } from "react-icons/lia";
 
 const ProductDetailPage = () => {
@@ -25,17 +22,7 @@ const ProductDetailPage = () => {
           <Avatar src={product.image} className="w-96 h-96" variant="square" />
         </Box>
 
-        <ButtonGroup
-          variant="contained"
-          fullWidth
-          className="flex flex-row gap-2 justify-center"
-          disableElevation
-        >
-          <Button color="primary" startIcon={<MdAddShoppingCart />}>
-            Add To Cart
-          </Button>
-          <Button color="secondary">Buy Now</Button>
-        </ButtonGroup>
+        <ProductPurchase />
       </Grid>
 
       <Grid md={8} className="flex flex-col gap-4">
