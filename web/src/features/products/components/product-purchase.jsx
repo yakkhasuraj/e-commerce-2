@@ -14,7 +14,7 @@ export const ProductPurchase = ({ product, quantity }) => {
   const router = useRouter();
 
   const handleBuyNow = () => {
-    if (isAuthenticated) {
+    if (!isAuthenticated) {
       router.push("/auth/login");
       return;
     }

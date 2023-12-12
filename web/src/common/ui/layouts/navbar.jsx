@@ -1,7 +1,12 @@
 import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 import Link from "next/link";
 
-const pages = ["Products", "About us", "Contact us"];
+const pages = [
+  { name: "Products", path: "/" },
+  { name: "About us", path: "/about-us" },
+  { name: "Contact us", path: "/contact-us" },
+  { name: "Carts", path: "/carts" },
+];
 
 export const Navbar = () => {
   return (
@@ -13,10 +18,12 @@ export const Navbar = () => {
           </Typography>
 
           <Box>
-            {pages.map((page) => (
-              <Button key={page} variant="text" color="secondary">
-                {page}
-              </Button>
+            {pages.map(({ name, path }) => (
+              <Link href={path} key={name}>
+                <Button variant="text" color="secondary">
+                  {name}
+                </Button>
+              </Link>
             ))}
           </Box>
         </Box>
