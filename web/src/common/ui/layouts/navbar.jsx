@@ -1,5 +1,7 @@
 import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 import Link from "next/link";
+import { SearchBar } from "./search-bar";
+import { Suspense } from "react";
 
 const pages = [
   { name: "Products", path: "/" },
@@ -27,6 +29,10 @@ export const Navbar = () => {
             ))}
           </Box>
         </Box>
+
+        <Suspense fallback="Search bar loading...">
+          <SearchBar />
+        </Suspense>
 
         <Link href="/auth/login">
           <Button variant="outlined" color="secondary">
