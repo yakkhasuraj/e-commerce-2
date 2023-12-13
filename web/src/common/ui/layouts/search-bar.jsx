@@ -18,11 +18,11 @@ export const SearchBar = () => {
   useDebounce(
     () => {
       if (isEmpty(input) && !isEmpty(value)) {
-        router.replace("/");
+        router.replace("/?page=1&pageSize=12");
         return;
       }
       if (isEmpty(input)) return;
-      const search = `/?search=${input}`;
+      const search = `/?page=1&pageSize=12&search=${input}`;
       if (pathname === "/") {
         router.replace(search);
         return;
@@ -30,7 +30,7 @@ export const SearchBar = () => {
       router.push(search);
     },
     500,
-    [router, input]
+    [input, pathname, router, value]
   );
 
   const handleChange = (event) => {
