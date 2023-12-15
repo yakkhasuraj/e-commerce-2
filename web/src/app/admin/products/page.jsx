@@ -1,7 +1,7 @@
 "use client";
 
 import { PRODUCTS } from "@/data";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -41,9 +41,17 @@ const ProductListPage = () => {
 
   return (
     <Box className="flex flex-col gap-4">
-      <Typography variant="h4" component="h1">
-        Products List
-      </Typography>
+      <Box className="flex flex-row justify-between">
+        <Typography variant="h4" component="h1">
+          Products List
+        </Typography>
+
+        <Link href="/admin/products/add">
+          <Button variant="contained" color="primary">
+            Add Product
+          </Button>
+        </Link>
+      </Box>
 
       <DataGrid
         rows={PRODUCTS}

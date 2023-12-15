@@ -8,7 +8,7 @@ export const createRandomProducts = () => {
     name: commerce.productName(),
     description: commerce.productDescription(),
     tags: [commerce.productAdjective(), commerce.productAdjective()],
-    price: commerce.price(),
+    price: parseFloat(commerce.price()),
     category: commerce.department(),
     quantity: number.int(),
     image: image.url(),

@@ -15,8 +15,7 @@ const getPostList = async (searchParams) => {
   return res.json();
 };
 
-export default async function Home(props) {
-  console.log("Props", props);
+export default async function Home() {
   // const postListData = await getPostList(props.searchParams);
 
   return (
