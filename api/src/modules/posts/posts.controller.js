@@ -1,3 +1,5 @@
+const { postValidator } = require("./posts.validator");
+
 let posts = [];
 
 const listPost = (req, res, next) => {

@@ -6,6 +6,8 @@ const {
   updatePost,
   deletePost,
 } = require("../../modules/posts/posts.controller");
+const { validationMiddleware } = require("../../middlewares/validation");
+const { postValidator } = require("../../modules/posts/posts.validator");
 
 const router = express.Router();
 
@@ -20,7 +22,10 @@ router.use((req, res, next) => {
   next();
 });
 
-router.route("/posts").get(listPost).post(createPost);
+router
+  .route("/posts")
+  .get(listPost)
+  .post(validationMiddleware(postValidator), createPost);
 router.route("/posts/:id").get(getPostById).put(updatePost).delete(deletePost);
 
 module.exports = router;
