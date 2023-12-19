@@ -1,56 +1,69 @@
 let posts = [];
 
-const listPost = (req, res) => {
-  res.status(200).json({ message: "Post listed successfully", data: posts });
-};
-
-const getPostById = (req, res) => {
-  const { id } = req.params;
-
-  const post = posts.find((post) => post.id === parseInt(id));
-  if (!post) {
-    res.status(404).json({ message: "Post not found", data: null });
-    return;
+const listPost = (req, res, next) => {
+  try {
+    res.status(200).json({ message: "Post listed successfully", data: posts });
+  } catch (error) {
+    next(error);
   }
-
-  res.status(200).json({ message: "Post retrieved successfully", data: post });
 };
 
-const createPost = (req, res) => {
-  const { body } = req;
+const getPostById = (req, res, next) => {
+  try {
+    const { id } = req.params;
 
-  posts.push(body);
+    const post = posts.find((post) => post.id === parseInt(id));
+    if (!post) throw new Error("Post not found");
 
-  res.status(201).json({ message: "Post created successfully", data: body });
-};
-
-const updatePost = (req, res) => {
-  const { id } = req.params;
-  const { body } = req;
-
-  const index = posts.findIndex((post) => post.id === parseInt(id));
-  if (index < 0) {
-    res.status(404).json({ message: "Post not found", data: null });
-    return;
+    res
+      .status(200)
+      .json({ message: "Post retrieved successfully", data: post });
+  } catch (error) {
+    next(error);
   }
-
-  posts[index] = body;
-  res.status(200).json({ message: "Post updated successfully", data: body });
 };
 
-const deletePost = (req, res) => {
-  const { id } = req.params;
+const createPost = (req, res, next) => {
+  try {
+    const { body } = req;
 
-  const post = posts.find((post) => post.id === parseInt(id));
-  if (!post) {
-    res.status(404).json({ message: "Post not found", data: null });
-    return;
+    posts.push(body);
+
+    res.status(201).json({ message: "Post created successfully", data: body });
+  } catch (error) {
+    next(error);
   }
+};
 
-  const newPostList = posts.filter((post) => post.id !== parseInt(id));
-  posts = newPostList;
+const updatePost = (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { body } = req;
 
-  res.status(200).json({ message: "Post deleted successfully", data: null });
+    const index = posts.findIndex((post) => post.id === parseInt(id));
+    if (index < 0) throw new Error("Post not found");
+
+    posts[index] = body;
+    res.status(200).json({ message: "Post updated successfully", data: body });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deletePost = (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const post = posts.find((post) => post.id === parseInt(id));
+    if (!post) throw new Error("Post not found");
+
+    const newPostList = posts.filter((post) => post.id !== parseInt(id));
+    posts = newPostList;
+
+    res.status(200).json({ message: "Post deleted successfully", data: null });
+  } catch (error) {
+    next(error);
+  }
 };
 
 module.exports = {

@@ -13,6 +13,10 @@ app.get("/", (req, res) => {
 
 app.use(router);
 
+app.use((err, req, res, next) => {
+  res.status(500).send({ message: err.message });
+});
+
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
 });
