@@ -1,4 +1,7 @@
+require("dotenv").config();
+
 const express = require("express");
+const mongoose = require("mongoose");
 const router = require("./src/routes/v1");
 const { ZodError } = require("zod");
 
@@ -7,6 +10,15 @@ const port = 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log("Connected to database");
+  })
+  .catch((err) => {
+    console.log("Unable to connect to database", err.message);
+  });
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Hello World!" });

@@ -26,6 +26,10 @@ router
   .route("/posts")
   .get(listPost)
   .post(validationMiddleware(postValidator), createPost);
-router.route("/posts/:id").get(getPostById).put(updatePost).delete(deletePost);
+router
+  .route("/posts/:id")
+  .get(getPostById)
+  .put(validationMiddleware(postValidator), updatePost)
+  .delete(deletePost);
 
 module.exports = router;
