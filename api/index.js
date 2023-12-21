@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 
 connectToDatabase();
 
-app.use(router);
+app.use("/v1", router);
 
 app.use((err, req, res, next) => {
   if (err instanceof ZodError) {
