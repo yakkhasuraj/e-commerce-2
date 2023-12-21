@@ -1,11 +1,5 @@
 const express = require("express");
-const {
-  listPost,
-  createPost,
-  getPostById,
-  updatePost,
-  deletePost,
-} = require("./posts.controller");
+const postsController = require("./posts.controller");
 const { validationMiddleware } = require("../../middlewares/validation");
 const { postValidator } = require("./posts.validator");
 
@@ -13,12 +7,12 @@ const postRouter = express.Router();
 
 postRouter
   .route("")
-  .get(listPost)
-  .post(validationMiddleware(postValidator), createPost);
+  .get(postsController.findAll)
+  .post(validationMiddleware(postValidator), postsController.createOne);
 postRouter
   .route("/:id")
-  .get(getPostById)
-  .put(validationMiddleware(postValidator), updatePost)
-  .delete(deletePost);
+  .get(postsController.findById)
+  .put(validationMiddleware(postValidator), postsController.updateById)
+  .delete(postsController.deleteById);
 
 module.exports = postRouter;
