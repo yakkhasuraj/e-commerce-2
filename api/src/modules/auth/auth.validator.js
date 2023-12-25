@@ -28,4 +28,20 @@ const signupValidator = z
   })
   .strict();
 
-module.exports = { signupValidator };
+const loginValidator = z
+  .object({
+    email: z
+      .string({ required_error: "Email is required" })
+      .email()
+      .trim()
+      .toLowerCase(),
+    password: z
+      .string({ required_error: "Password is required" })
+      .regex(passwordRegex, {
+        message:
+          "Password must has at least 8 characters, one uppercase letter, one lower case letter, on digit and one special character",
+      }),
+  })
+  .strict();
+
+module.exports = { signupValidator, loginValidator };

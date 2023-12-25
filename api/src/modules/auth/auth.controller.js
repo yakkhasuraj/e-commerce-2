@@ -1,4 +1,5 @@
-const { hash } = require("../../utils/hash");
+const { verify } = require("../../utils/hash");
+const HttpException = require("../../utils/http.exception");
 const authService = require("./auth.service");
 
 class AuthController {
@@ -10,19 +11,29 @@ class AuthController {
 
   signup = async (req, res, next) => {
     try {
-      const { email, password, ...rest } = req.body;
+      const { email } = req.body;
 
       await this.service.throwIfUserExists({ email });
 
-      const hashedPassword = await hash(password);
-
-      const result = await this.service.createOne({
-        email,
-        password: hashedPassword,
-        ...rest,
-      });
+      const result = await this.service.createOne(req.body);
 
       res.status(201).json({ message: "User signed up successfully", result });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  login = async (req, res, next) => {
+    try {
+      const { email, password } = req.body;
+
+      const user = await this.service.findUser({ email });
+
+      const isVerified = await verify(user.password, password);
+      if (!isVerified)
+        throw new HttpException(401, "Email or password doesn't match");
+
+      res.status(201).json({ message: "User logged in successfully" });
     } catch (error) {
       next(error);
     }
