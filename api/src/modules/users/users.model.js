@@ -11,10 +11,11 @@ const usersSchema = new Schema(
     image: { type: String },
     dateOfBirth: { type: Date, required: "Date of birth is required" },
     password: { type: String, required: "Password is required" },
+    role: { type: String, enum: ["Admin", "Customer"], default: "Customer" },
     status: {
       type: String,
       enum: ["Enabled", "Disabled"],
-      default: "Disabled",
+      default: "Enabled",
     },
     deletedAt: { type: Date },
   },

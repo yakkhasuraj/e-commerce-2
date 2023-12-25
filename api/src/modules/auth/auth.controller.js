@@ -1,5 +1,6 @@
 const { verify } = require("../../utils/hash");
 const HttpException = require("../../utils/http.exception");
+const { transporter } = require("../../utils/mail");
 const { signToken } = require("../../utils/token");
 const authService = require("./auth.service");
 
@@ -17,6 +18,13 @@ class AuthController {
       await this.service.throwIfUserExists({ email });
 
       const result = await this.service.createOne(req.body);
+
+      transporter.sendMail({
+        from: '"E-commerce" <customer@e-commerce.com>',
+        to: email,
+        subject: "Welcome to E-commerce",
+        text: "You've successfully create an account in E-commerce",
+      });
 
       res.status(201).json({ message: "User signed up successfully", result });
     } catch (error) {
