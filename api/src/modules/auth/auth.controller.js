@@ -1,5 +1,6 @@
 const { verify } = require("../../utils/hash");
 const HttpException = require("../../utils/http.exception");
+const { signToken } = require("../../utils/token");
 const authService = require("./auth.service");
 
 class AuthController {
@@ -33,7 +34,9 @@ class AuthController {
       if (!isVerified)
         throw new HttpException(401, "Email or password doesn't match");
 
-      res.status(201).json({ message: "User logged in successfully" });
+      const token = await signToken({ _id: user._id });
+
+      res.status(200).json({ message: "User logged in successfully", token });
     } catch (error) {
       next(error);
     }

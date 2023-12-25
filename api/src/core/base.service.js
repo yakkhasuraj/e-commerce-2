@@ -10,9 +10,7 @@ class BaseService {
     this.model = model;
   }
 
-  findAll = () => {
-    return this.model.find();
-  };
+  findAll = () => this.model.find();
 
   findById = async (id) => {
     const result = await this.model.findById(id);
@@ -20,9 +18,7 @@ class BaseService {
     return result;
   };
 
-  createOne = (data) => {
-    return this.model.create(data);
-  };
+  createOne = (data) => this.model.create(data);
 
   updateById = async (id, data) => {
     const result = await this.model.findByIdAndUpdate(id, data, { new: true });
