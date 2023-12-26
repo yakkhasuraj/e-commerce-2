@@ -10,7 +10,7 @@ const usersSchema = new Schema(
     email: { type: String, required: "Email is required", index: true },
     image: { type: String },
     dateOfBirth: { type: Date, required: "Date of birth is required" },
-    password: { type: String, required: "Password is required" },
+    password: { type: String, required: "Password is required", select: false },
     role: { type: String, enum: ["Admin", "Customer"], default: "Customer" },
     status: {
       type: String,

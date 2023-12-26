@@ -13,7 +13,7 @@ class AuthService extends BaseService {
   };
 
   findUser = async (filters) => {
-    const result = await this.model.findOne(filters);
+    const result = await this.model.findOne(filters, ["email", "password"]);
     if (!result)
       throw new HttpException(401, "Email or password doesn't match");
     return result;

@@ -37,7 +37,7 @@ class AuthController {
       const { email, password } = req.body;
 
       const user = await this.service.findUser({ email });
-
+      console.log("User", user);
       const isVerified = await verify(user.password, password);
       if (!isVerified)
         throw new HttpException(401, "Email or password doesn't match");
