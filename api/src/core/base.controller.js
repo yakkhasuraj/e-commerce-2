@@ -8,7 +8,8 @@ class BaseController {
 
   findAll = async (req, res, next) => {
     try {
-      const results = await this.service.findAll();
+      const { projection, populate } = req.query;
+      const results = await this.service.findAll({}, projection, populate);
       res.status(200).json({ message: "Data listed successfully", results });
     } catch (error) {
       next(error);
@@ -17,7 +18,12 @@ class BaseController {
 
   findById = async (req, res, next) => {
     try {
-      const result = await this.service.findById(req.params.id);
+      const { projection, populate } = req.query;
+      const result = await this.service.findById(
+        req.params.id,
+        projection,
+        populate
+      );
       res.status(200).json({ message: "Data retrieved successfully", result });
     } catch (error) {
       next(error);

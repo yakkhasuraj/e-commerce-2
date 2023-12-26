@@ -12,9 +12,11 @@ exports.authMiddleware = async (req, res, next) => {
 
     const decoded = await verifyToken(token);
 
-    await usersService.findById(decoded._id);
+    const user = await usersService.findById(decoded._id);
+    if (user.status === "Disabled")
+      throw new HttpException(404, "User not found");
 
-    // TODO: Check if user is disabled
+    req.user = user;
 
     next();
   } catch (error) {

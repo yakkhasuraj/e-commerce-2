@@ -10,10 +10,11 @@ class BaseService {
     this.model = model;
   }
 
-  findAll = () => this.model.find();
+  findAll = (filters, projection, populate) =>
+    this.model.find(filters, projection, { populate });
 
-  findById = async (id) => {
-    const result = await this.model.findById(id);
+  findById = async (id, projection, populate) => {
+    const result = await this.model.findById(id, projection, { populate });
     if (!result) throw new HttpException(404, `${this.name} not found`);
     return result;
   };
