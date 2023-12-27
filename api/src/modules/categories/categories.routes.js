@@ -4,17 +4,28 @@ const { authMiddleware } = require("../../middlewares/auth");
 const {
   validateUserInput,
   validateObjectId,
+  validateQueryParams,
 } = require("../../middlewares/validation");
 const { categoryValidator } = require("./categories.validator");
 const { authorizationMiddleware } = require("../../middlewares/authorization");
+const {
+  queryValidator,
+  projectionAndPopulateValidator,
+} = require("../../utils/query");
 
 const categoriesRouter = express.Router();
 
-categoriesRouter.route("").get(categoriesController.findAll);
+categoriesRouter
+  .route("")
+  .get(validateQueryParams(queryValidator), categoriesController.findAll);
 
 categoriesRouter
   .route("/:id")
-  .get(validateObjectId, categoriesController.findById);
+  .get(
+    validateObjectId,
+    validateQueryParams(projectionAndPopulateValidator),
+    categoriesController.findById
+  );
 
 categoriesRouter.use(authMiddleware, authorizationMiddleware());
 
