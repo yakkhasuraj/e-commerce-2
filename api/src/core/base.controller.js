@@ -8,9 +8,20 @@ class BaseController {
 
   findAll = async (req, res, next) => {
     try {
-      const { projection, populate } = req.query;
-      const results = await this.service.findAll({}, projection, populate);
-      res.status(200).json({ message: "Data listed successfully", results });
+      const { page, limit, field, order, projection, populate } = req.query;
+      const [results, total] = await Promise.all([
+        this.service.findAll({}, projection, {
+          page,
+          limit,
+          field,
+          order,
+          populate,
+        }),
+        this.service.count({}),
+      ]);
+      res
+        .status(200)
+        .json({ message: "Data listed successfully", total, results });
     } catch (error) {
       next(error);
     }
