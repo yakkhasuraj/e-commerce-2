@@ -6,7 +6,7 @@ exports.authMiddleware = async (req, res, next) => {
   try {
     const { authorization } = req.headers;
 
-    if (!authorization) throw new HttpException(404, "Token not found");
+    if (!authorization) throw new HttpException(401, "Token not found");
 
     const token = getToken(authorization);
 
@@ -14,7 +14,7 @@ exports.authMiddleware = async (req, res, next) => {
 
     const user = await usersService.findById(decoded._id);
     if (user.status === "Disabled")
-      throw new HttpException(404, "User not found");
+      throw new HttpException(401, "User not found");
 
     req.user = user;
 

@@ -6,6 +6,7 @@ const {
   validateObjectId,
 } = require("../../middlewares/validation");
 const { categoryValidator } = require("./categories.validator");
+const { authorizationMiddleware } = require("../../middlewares/authorization");
 
 const categoriesRouter = express.Router();
 
@@ -15,7 +16,7 @@ categoriesRouter
   .route("/:id")
   .get(validateObjectId, categoriesController.findById);
 
-categoriesRouter.use(authMiddleware);
+categoriesRouter.use(authMiddleware, authorizationMiddleware());
 
 categoriesRouter
   .route("")
