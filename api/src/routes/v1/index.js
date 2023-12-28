@@ -3,6 +3,7 @@ const postsRouter = require("../../modules/posts/posts.routes");
 const usersRouter = require("../../modules/users/users.routes");
 const authRouter = require("../../modules/auth/auth.routes");
 const categoriesRouter = require("../../modules/categories/categories.routes");
+const productsRouter = require("../../modules/products/products.routes");
 
 const router = express.Router();
 
@@ -15,6 +16,7 @@ router.use("/auth", authRouter);
 router.use("/users", usersRouter);
 router.use("/posts", postsRouter);
 router.use("/categories", categoriesRouter);
+router.use("/products", productsRouter);
 
 router.use((req, res) => {
   console.log("Routes", req.originalUrl);
