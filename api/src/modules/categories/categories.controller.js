@@ -8,11 +8,13 @@ class CategoriesController extends BaseController {
 
   createOne = async (req, res, next) => {
     try {
-      const result = await this.service.createOne({
-        ...req.body,
-        createdBy: req.user._id,
-      });
-      res.status(200).json({ message: "Data created successfully", result });
+      // const result = await this.service.createOne({
+      //   ...req.body,
+      //   createdBy: req.user._id,
+      // });
+      res
+        .status(200)
+        .json({ message: "Data created successfully", result: {} });
     } catch (error) {
       next(error);
     }

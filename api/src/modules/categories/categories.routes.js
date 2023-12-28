@@ -12,6 +12,7 @@ const {
   queryValidator,
   projectionAndPopulateValidator,
 } = require("../../utils/query");
+const upload = require("../../middlewares/upload");
 
 const categoriesRouter = express.Router();
 
@@ -29,9 +30,11 @@ categoriesRouter
 
 categoriesRouter.use(authMiddleware, authorizationMiddleware());
 
-categoriesRouter
-  .route("")
-  .post(validateUserInput(categoryValidator), categoriesController.createOne);
+categoriesRouter.route("").post(
+  upload.single("image"),
+  // validateUserInput(categoryValidator),
+  categoriesController.createOne
+);
 
 categoriesRouter
   .route("/:id")
