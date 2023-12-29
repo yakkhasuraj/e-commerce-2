@@ -30,7 +30,9 @@ app.use((err, req, res, next) => {
   if (err instanceof MongooseError) {
     res.status(400).json({ message: err.message });
   }
-  res.status(err.status || 500).json({ message: err.message });
+  res
+    .status(err.status || 500)
+    .json({ message: err.message || "Internal Server Error" });
 });
 
 app.listen(port, () => {

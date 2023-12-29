@@ -6,3 +6,6 @@ exports.mailHost = process.env.MAIL_HOST;
 exports.mailPort = process.env.MAIL_PORT;
 exports.mailAuthUser = process.env.MAIL_AUTH_USER;
 exports.mailAuthPassword = process.env.MAIL_AUTH_PASSWORD;
+exports.cloudinaryCloudName = process.env.CLOUDINARY_CLOUD_NAME;
+exports.cloudinaryApiKey = process.env.CLOUDINARY_API_KEY;
+exports.cloudinaryApiSecretKey = process.env.CLOUDINARY_API_SECRET_KEY;

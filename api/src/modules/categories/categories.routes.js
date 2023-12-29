@@ -30,11 +30,13 @@ categoriesRouter
 
 categoriesRouter.use(authMiddleware, authorizationMiddleware());
 
-categoriesRouter.route("").post(
-  upload.single("image"),
-  // validateUserInput(categoryValidator),
-  categoriesController.createOne
-);
+categoriesRouter
+  .route("")
+  .post(
+    upload.single("image"),
+    validateUserInput(categoryValidator),
+    categoriesController.createOne
+  );
 
 categoriesRouter
   .route("/:id")

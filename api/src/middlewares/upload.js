@@ -1,15 +1,17 @@
-const path = require("node:path");
+// const path = require("node:path");
 const multer = require("multer");
 const HttpException = require("../utils/http.exception");
 
-const diskStorage = multer.diskStorage({
-  destination: "uploads/",
-  filename: (req, { originalname }, cb) => {
-    const extension = path.extname(originalname);
-    const file = path.basename(originalname, extension);
-    cb(null, `${file}-${Date.now()}${extension}`);
-  },
-});
+// const diskStorage = multer.diskStorage({
+//   destination: "uploads/",
+//   filename: (req, { originalname }, cb) => {
+//     const extension = path.extname(originalname);
+//     const file = path.basename(originalname, extension);
+//     cb(null, `${file}-${Date.now()}${extension}`);
+//   },
+// });
+
+const memoryStorage = multer.memoryStorage();
 
 const imageFilter = (req, file, cb) => {
   try {
@@ -28,7 +30,7 @@ const imageFilter = (req, file, cb) => {
 };
 
 const upload = multer({
-  storage: diskStorage,
+  storage: memoryStorage,
   fileFilter: imageFilter,
   limits: {
     fileSize: 2 * 1024 * 1024, // 2MB
