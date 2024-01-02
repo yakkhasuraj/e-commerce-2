@@ -12,6 +12,7 @@ const {
   queryValidator,
   projectionAndPopulateValidator,
 } = require("../../utils/query");
+const upload = require("../../middlewares/upload");
 
 const productsRouter = express.Router();
 
@@ -31,11 +32,19 @@ productsRouter.use(authMiddleware, authorizationMiddleware());
 
 productsRouter
   .route("")
-  .post(validateUserInput(productValidator), productsController.createOne);
+  .post(
+    upload.single("image"),
+    validateUserInput(productValidator),
+    productsController.createOne
+  );
 
 productsRouter
   .route("/:id")
-  .put(validateUserInput(productValidator), productsController.updateById)
+  .put(
+    upload.single("image"),
+    validateUserInput(productValidator),
+    productsController.updateById
+  )
   .delete(productsController.deleteById);
 
 module.exports = productsRouter;
