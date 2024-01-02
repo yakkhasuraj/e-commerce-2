@@ -9,7 +9,7 @@ const productValidator = z
       .string({ required_error: "Description is required" })
       .min(10)
       .max(2500),
-    tags: z.string({ required_error: "Tag is required" }).array(),
+    tags: z.string({ required_error: "Tag is required" }).array().nonempty(),
     price: z.coerce.number({ required_error: "Price is required" }).gte(100),
     quantity: z.coerce
       .number({ required_error: "Quantity is required" })

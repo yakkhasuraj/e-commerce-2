@@ -11,6 +11,8 @@ class ProductsService extends BaseService {
     this.uploadService = uploadService;
   }
 
+  findAllProducts = (products) => this.model.find({ _id: { $in: products } });
+
   uploadImage = async (file, name) => {
     const { mimetype, buffer } = file;
     const base64 = buffer.toString("base64");

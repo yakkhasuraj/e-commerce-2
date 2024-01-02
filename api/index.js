@@ -29,6 +29,7 @@ app.use((err, req, res, next) => {
   }
   if (err instanceof MongooseError) {
     res.status(400).json({ message: err.message });
+    return;
   }
   res
     .status(err.status || 500)

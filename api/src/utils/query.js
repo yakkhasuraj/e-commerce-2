@@ -2,8 +2,8 @@ const { z } = require("zod");
 
 const projectionAndPopulateValidator = z
   .object({
-    projection: z.array(z.string()).optional(),
-    populate: z.array(z.string()).optional(),
+    projection: z.string().array().optional(),
+    populate: z.string().array().optional(),
   })
   .partial()
   .strict();
