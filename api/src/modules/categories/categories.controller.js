@@ -4,34 +4,19 @@ const uploadToCloud = require("../../utils/upload");
 const HttpException = require("../../utils/http.exception");
 
 class CategoriesController extends BaseController {
-  uploadService;
-
-  constructor(service, uploadService) {
+  constructor(service) {
     super(service);
-
-    this.uploadService = uploadService;
   }
 
   createOne = async (req, res, next) => {
     try {
       if (!req.file) throw new HttpException(400, "Image is required");
 
-      const { mimetype, buffer } = req.file;
-      const base64 = buffer.toString("base64");
-
-      const { secure_url } = await this.uploadService(
-        `data:${mimetype};base64,${base64}`,
-        {
-          folder: "e-commerce/category",
-          use_filename: true,
-          tags: [req.body.name],
-          resource_type: "image",
-        }
-      );
+      const image = await this.service.uploadImage(req.file, req.body.name);
 
       const result = await this.service.createOne({
         ...req.body,
-        image: secure_url,
+        image,
         createdBy: req.user._id,
       });
 
@@ -43,8 +28,15 @@ class CategoriesController extends BaseController {
 
   updateById = async (req, res, next) => {
     try {
+      const body = { ...req.body };
+
+      if (req.file) {
+        const image = await this.service.uploadImage(req.file, req.body.name);
+        body.image = image;
+      }
+
       const result = await this.service.updateById(req.params.id, {
-        ...req.body,
+        ...body,
         updatedBy: req.user._id,
       });
       res.status(200).json({ message: "Data updated successfully", result });
@@ -54,9 +46,6 @@ class CategoriesController extends BaseController {
   };
 }
 
-const categoriesController = new CategoriesController(
-  categoriesService,
-  uploadToCloud
-);
+const categoriesController = new CategoriesController(categoriesService);
 
 module.exports = categoriesController;

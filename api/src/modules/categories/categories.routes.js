@@ -40,7 +40,11 @@ categoriesRouter
 
 categoriesRouter
   .route("/:id")
-  .put(validateUserInput(categoryValidator), categoriesController.updateById)
+  .put(
+    upload.single("image"),
+    validateUserInput(categoryValidator),
+    categoriesController.updateById
+  )
   .delete(categoriesController.deleteById);
 
 module.exports = categoriesRouter;
