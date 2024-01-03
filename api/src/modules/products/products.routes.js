@@ -40,6 +40,7 @@ productsRouter
 
 productsRouter
   .route("/:id")
+  .all(validateObjectId)
   .put(
     upload.single("image"),
     validateUserInput(productValidator),

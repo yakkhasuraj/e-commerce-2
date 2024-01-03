@@ -27,13 +27,10 @@ cartsRouter
 
 cartsRouter
   .route("/own")
-  .get(authorizationMiddleware("Customer"), cartsController.findOwnCart)
-  .put(
-    authorizationMiddleware("Customer"),
-    validateUserInput(cartsValidator),
-    cartsController.updateOwnCart
-  )
-  .delete(authorizationMiddleware("Customer"), cartsController.deleteOwnCart);
+  .all(authorizationMiddleware("Customer"))
+  .get(cartsController.findOwnCart)
+  .put(validateUserInput(cartsValidator), cartsController.updateOwnCart)
+  .delete(cartsController.deleteOwnCart);
 
 cartsRouter.use(authorizationMiddleware());
 
@@ -43,14 +40,11 @@ cartsRouter
 
 cartsRouter
   .route("/:id")
+  .all(validateObjectId)
   .get(
-    validateObjectId,
     validateQueryParams(projectionAndPopulateValidator),
     cartsController.findById
-  );
-
-cartsRouter
-  .route("/:id")
+  )
   .put(validateUserInput(cartsValidator), cartsController.updateById)
   .delete(cartsController.deleteById);
 

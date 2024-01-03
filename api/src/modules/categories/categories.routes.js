@@ -40,6 +40,7 @@ categoriesRouter
 
 categoriesRouter
   .route("/:id")
+  .all(validateObjectId)
   .put(
     upload.single("image"),
     validateUserInput(categoryValidator),
