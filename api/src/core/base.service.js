@@ -50,10 +50,16 @@ class BaseService {
 
   createOne = (data) => this.model.create(data);
 
-  updateById = async (id, data) => {
+  updateById = async (
+    id,
+    data,
+    { projection, populate, beforeUpdate = true }
+  ) => {
     const result = await this.model.findByIdAndUpdate(id, data, {
-      new: true,
+      new: beforeUpdate,
       lean: true,
+      projection,
+      populate,
     });
     if (!result) throw new HttpException(404, `${this.name} not found`);
     return result;
