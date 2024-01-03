@@ -15,6 +15,28 @@ const { cartsValidator } = require("./carts.validator");
 
 const cartsRouter = express.Router();
 
+cartsRouter.use(authMiddleware);
+
+cartsRouter
+  .route("")
+  .post(
+    authorizationMiddleware("Customer"),
+    validateUserInput(cartsValidator),
+    cartsController.createOne
+  );
+
+cartsRouter
+  .route("/own")
+  .get(authorizationMiddleware("Customer"), cartsController.findOwnCart)
+  .put(
+    authorizationMiddleware("Customer"),
+    validateUserInput(cartsValidator),
+    cartsController.updateOwnCart
+  )
+  .delete(authorizationMiddleware("Customer"), cartsController.deleteOwnCart);
+
+cartsRouter.use(authorizationMiddleware());
+
 cartsRouter
   .route("")
   .get(validateQueryParams(queryValidator), cartsController.findAll);
@@ -27,15 +49,9 @@ cartsRouter
     cartsController.findById
   );
 
-cartsRouter.use(authMiddleware, authorizationMiddleware(/* "Customer" */));
-
-cartsRouter
-  .route("")
-  .post(/* validateUserInput(cartsValidator), */ cartsController.createOne);
-
 cartsRouter
   .route("/:id")
-  .put(cartsController.updateById)
+  .put(validateUserInput(cartsValidator), cartsController.updateById)
   .delete(cartsController.deleteById);
 
 module.exports = cartsRouter;

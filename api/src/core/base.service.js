@@ -39,6 +39,15 @@ class BaseService {
     return result;
   };
 
+  findOne = async (filters, projection, populate) => {
+    const result = await this.model.findOne(filters, projection, {
+      populate,
+      lean: true,
+    });
+    if (!result) throw new HttpException(404, `${this.name} not found`);
+    return result;
+  };
+
   createOne = (data) => this.model.create(data);
 
   updateById = async (id, data) => {
@@ -50,8 +59,23 @@ class BaseService {
     return result;
   };
 
+  updateOne = async (filters, data) => {
+    const result = await this.model.findOneAndUpdate(filters, data, {
+      new: true,
+      lean: true,
+    });
+    if (!result) throw new HttpException(404, `${this.name} not found`);
+    return result;
+  };
+
   deleteById = async (id) => {
     const result = await this.model.findByIdAndDelete(id, { lean: true });
+    if (!result) throw new HttpException(404, `${this.name} not found`);
+    return result;
+  };
+
+  deleteOne = async (filters) => {
+    const result = await this.model.findOneAndDelete(filters, { lean: true });
     if (!result) throw new HttpException(404, `${this.name} not found`);
     return result;
   };

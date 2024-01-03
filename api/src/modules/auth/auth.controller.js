@@ -42,7 +42,7 @@ class AuthController {
       if (!isVerified)
         throw new HttpException(401, "Email or password doesn't match");
 
-      const token = await signToken({ _id: user._id });
+      const token = await signToken({ _id: user._id, role: user.role });
 
       res.status(200).json({ message: "User logged in successfully", token });
     } catch (error) {

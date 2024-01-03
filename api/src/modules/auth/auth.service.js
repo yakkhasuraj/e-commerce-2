@@ -16,6 +16,7 @@ class AuthService extends BaseService {
     const result = await this.model.findOne(filters, [
       "email",
       "password",
+      "role",
       "status",
     ]);
     if (!result)

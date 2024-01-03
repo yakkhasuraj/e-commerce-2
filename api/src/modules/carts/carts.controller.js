@@ -1,25 +1,33 @@
 const BaseController = require("../../core/base.controller");
-const HttpException = require("../../utils/http.exception");
-const productsService = require("../products/products.service");
 const cartsService = require("./carts.service");
 
 class CartsController extends BaseController {
-  /** @type {import('../products/products.service')} */
-  productsService;
-
-  constructor(service, productsService) {
+  constructor(service) {
     super(service);
-
-    this.productsService = productsService;
   }
+
+  findOwnCart = async (req, res, next) => {
+    try {
+      const { projection, populate } = req.query;
+      const result = await this.service.findOne(
+        {
+          createdBy: req.user._id,
+          deal: "InProgress",
+        },
+        projection,
+        populate
+      );
+      res.status(200).json({ message: "Data retrieved successfully", result });
+    } catch (error) {
+      next(error);
+    }
+  };
 
   createOne = async (req, res, next) => {
     try {
-      const products = await this.productsService.findAllProducts(
+      await this.service.throwIfProductIsMissing(
         req.body.products.map(({ product }) => product)
       );
-      if (products.length !== req.body.products.length)
-        throw new HttpException(404, "Product doesn't exist");
 
       const result = await this.service.createOne({
         ...req.body,
@@ -33,6 +41,10 @@ class CartsController extends BaseController {
 
   updateById = async (req, res, next) => {
     try {
+      await this.service.throwIfProductIsMissing(
+        req.body.products.map(({ product }) => product)
+      );
+
       const result = await this.service.updateById(req.params.id, {
         ...req.body,
         updatedBy: req.user._id,
@@ -42,8 +54,36 @@ class CartsController extends BaseController {
       next(error);
     }
   };
+
+  updateOwnCart = async (req, res, next) => {
+    try {
+      await this.service.throwIfProductIsMissing(
+        req.body.products.map(({ product }) => product)
+      );
+
+      const result = await this.service.updateOne(
+        { createdBy: req.user._id, deal: "InProgress" },
+        { ...req.body, updatedBy: req.user._id }
+      );
+      res.status(200).json({ message: "Data updated successfully", result });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  deleteOwnCart = async (req, res, next) => {
+    try {
+      const result = await this.service.deleteOne({
+        createdBy: req.user._id,
+        deal: "InProgress",
+      });
+      res.status(200).json({ message: "Data deleted successfully", result });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
-const cartsController = new CartsController(cartsService, productsService);
+const cartsController = new CartsController(cartsService);
 
 module.exports = cartsController;
