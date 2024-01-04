@@ -10,6 +10,11 @@ const ordersSchema = new Schema(
       required: "Cart is required",
     },
     total: { type: Number, required: "Total is required" },
+    deal: {
+      type: String,
+      enum: ["InProgress", "Completed"],
+      default: "InProgress",
+    },
     status: {
       type: String,
       enum: ["Enabled", "Disabled"],

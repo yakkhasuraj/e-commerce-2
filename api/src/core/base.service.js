@@ -50,11 +50,8 @@ class BaseService {
 
   createOne = (data) => this.model.create(data);
 
-  updateById = async (
-    id,
-    data,
-    { projection, populate, beforeUpdate = true }
-  ) => {
+  updateById = async (id, data, options = {}) => {
+    const { projection, populate, beforeUpdate = true } = options;
     const result = await this.model.findByIdAndUpdate(id, data, {
       new: beforeUpdate,
       lean: true,

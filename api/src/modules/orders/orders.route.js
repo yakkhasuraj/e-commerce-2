@@ -11,11 +11,15 @@ const {
   projectionAndPopulateValidator,
   queryValidator,
 } = require("../../utils/query");
-const { orderValidator } = require("./orders.validator");
+const { orderValidator, orderStatusValidator } = require("./orders.validator");
 
 const ordersRouter = express.Router();
 
 ordersRouter.use(authMiddleware);
+
+ordersRouter
+  .route("")
+  .get(validateQueryParams(queryValidator), ordersController.findAll);
 
 ordersRouter
   .route("")
@@ -25,11 +29,12 @@ ordersRouter
     ordersController.createOne
   );
 
-ordersRouter.use(authorizationMiddleware());
-
 ordersRouter
-  .route("")
-  .get(validateQueryParams(queryValidator), ordersController.findAll);
+  .route("/own")
+  .all(authorizationMiddleware("Customer"))
+  .get(ordersController.findOwnOrder);
+
+ordersRouter.use(authorizationMiddleware());
 
 ordersRouter
   .route("/:id")
@@ -38,7 +43,7 @@ ordersRouter
     validateQueryParams(projectionAndPopulateValidator),
     ordersController.findById
   )
-  .put(ordersController.updateById)
+  .patch(validateUserInput(orderStatusValidator), ordersController.updateById)
   .delete(ordersController.deleteById);
 
 module.exports = ordersRouter;
