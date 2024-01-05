@@ -1,5 +1,8 @@
 "use client";
 
+import { ACCESS_TOKEN, LOGIN, ONE_SECOND } from "@/configs";
+import { $axios } from "@/libs/axios";
+import { decodeJwt, isEmpty } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoadingButton } from "@mui/lab";
 import {
@@ -11,14 +14,13 @@ import {
   TextField,
 } from "@mui/material";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { MdOutlineEmail } from "react-icons/md";
 import { TbPassword } from "react-icons/tb";
-import { loginValidator } from "../validators";
 import { toast } from "react-toastify";
 import { useCookie } from "react-use";
-import { ACCESS_TOKEN } from "@/configs";
-import { useRouter } from "next/navigation";
+import { loginValidator } from "../validators";
 
 export const Login = () => {
   const [, updateCookie] = useCookie(ACCESS_TOKEN);
@@ -36,15 +38,29 @@ export const Login = () => {
     resolver: zodResolver(loginValidator),
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     try {
-      if (data.email !== "john.doe@test.com" || data.password !== "12345678")
-        throw new Error("Logged in failed");
-      updateCookie(data, { secure: true, sameSite: "Strict", expires: 1 });
-      toast("Logged in successfully", { type: "success" });
+      const { message, token } = await $axios.post(`/${AUTH}/${LOGIN}`, data);
+
+      const decoded = decodeJwt(token);
+
+      updateCookie(token, {
+        secure: true,
+        sameSite: "Strict",
+        expires: new Date(decoded.exp * ONE_SECOND),
+      });
+      toast(message, { type: "success" });
       router.replace("/");
     } catch (error) {
-      toast("Logged in failed", { type: "error" });
+      isEmpty(error.messages)
+        ? toast(error.message, {
+            type: "error",
+          })
+        : error.messages.map((message) =>
+            toast(message, {
+              type: "error",
+            })
+          );
     }
   };
 

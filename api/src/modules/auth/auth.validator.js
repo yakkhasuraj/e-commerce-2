@@ -41,6 +41,7 @@ const loginValidator = z
         message:
           "Password must has at least 8 characters, one uppercase letter, one lower case letter, on digit and one special character",
       }),
+    rememberMe: z.boolean().optional(),
   })
   .strict();
 

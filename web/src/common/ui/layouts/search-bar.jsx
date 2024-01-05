@@ -39,20 +39,21 @@ export const SearchBar = () => {
   };
 
   return (
-    <TextField
-      id="search"
-      label=""
-      variant="outlined"
-      type="text"
-      onChange={handleChange}
-      value={input}
-      InputProps={{
-        startAdornment: (
-          <InputAdornment position="start">
-            <MdOutlineSearch />
-          </InputAdornment>
-        ),
-      }}
-    />
+    <h1>Search bar</h1>
+    // <TextField
+    //   id="search"
+    //   label=""
+    //   variant="outlined"
+    //   type="text"
+    //   onChange={handleChange}
+    //   value={input}
+    //   InputProps={{
+    //     startAdornment: (
+    //       <InputAdornment position="start">
+    //         <MdOutlineSearch />
+    //       </InputAdornment>
+    //     ),
+    //   }}
+    // />
   );
 };

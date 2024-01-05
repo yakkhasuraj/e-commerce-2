@@ -11,6 +11,7 @@ export const signupValidator = z
     firstName: z.string().min(3).max(20).trim(),
     lastName: z.string().min(3).max(20).trim(),
     email: z.string().email(),
+    dateOfBirth: z.coerce.date(),
     password: z.string().min(8).max(20),
     confirmPassword: z.string().min(8).max(20),
     termsAndConditions: z.boolean(),

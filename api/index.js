@@ -1,13 +1,16 @@
 require("dotenv").config();
 
 const express = require("express");
+const cors = require("cors");
 const router = require("./src/routes/v1");
 const { ZodError } = require("zod");
 const connectToDatabase = require("./src/libs/database");
 const { MongooseError } = require("mongoose");
+const { port } = require("./src/configs/env.variables");
 
 const app = express();
-const port = 3000;
+
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

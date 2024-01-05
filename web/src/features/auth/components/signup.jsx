@@ -1,25 +1,29 @@
 "use client";
 
+import { AUTH, SINGUP } from "@/configs";
+import { $axios } from "@/libs/axios";
+import { isEmpty } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoadingButton } from "@mui/lab";
 import {
-  Alert,
   Checkbox,
   FormControl,
   FormControlLabel,
   FormHelperText,
   InputAdornment,
-  Snackbar,
   TextField,
 } from "@mui/material";
-import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { BsCalendarDate } from "react-icons/bs";
 import { MdOutlineEmail, MdPersonOutline } from "react-icons/md";
 import { TbPassword } from "react-icons/tb";
-import { signupValidator } from "../validators";
 import { toast } from "react-toastify";
+import { signupValidator } from "../validators";
+import { useRouter } from "next/navigation";
 
 export const Signup = () => {
+  const router = useRouter();
+
   const {
     control,
     formState: { errors, isSubmitting },
@@ -30,6 +34,7 @@ export const Signup = () => {
       firstName: "",
       lastName: "",
       email: "",
+      dateOfBirth: "",
       password: "",
       confirmPassword: "",
       termsAndConditions: false,
@@ -39,9 +44,23 @@ export const Signup = () => {
 
   const termsAndConditions = watch("termsAndConditions");
 
-  const onSubmit = (data) => {
-    console.log(data);
-    toast("User created successfully", { type: "success" });
+  const onSubmit = async ({ confirmPassword, termsAndConditions, ...rest }) => {
+    try {
+      const { message } = await $axios.post(`/${AUTH}/${SINGUP}`, rest);
+
+      toast(message, { type: "success" });
+      router.replace("/");
+    } catch (error) {
+      isEmpty(error.messages)
+        ? toast(error.message, {
+            type: "error",
+          })
+        : error.messages.map((message) =>
+            toast(message, {
+              type: "error",
+            })
+          );
+    }
   };
 
   return (
@@ -109,6 +128,29 @@ export const Signup = () => {
                 startAdornment: (
                   <InputAdornment position="start">
                     <MdOutlineEmail />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          )}
+        />
+
+        <Controller
+          name="dateOfBirth"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              id={field.name}
+              label="Date of Birth"
+              variant="outlined"
+              type="date"
+              error={Boolean(errors.dateOfBirth)}
+              helperText={errors.dateOfBirth?.message}
+              {...field}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <BsCalendarDate />
                   </InputAdornment>
                 ),
               }}
