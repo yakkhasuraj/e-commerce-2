@@ -1,6 +1,6 @@
 "use client";
 
-import { ACCESS_TOKEN, LOGIN, ONE_SECOND } from "@/configs";
+import { ACCESS_TOKEN, AUTH, LOGIN, ONE_SECOND } from "@/configs";
 import { $axios } from "@/libs/axios";
 import { decodeJwt, isEmpty } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
