@@ -7,6 +7,7 @@ import {
   Rating,
   Typography,
 } from "@mui/material";
+import Image from "next/image";
 import Link from "next/link";
 
 export const ProductCard = ({
@@ -15,7 +16,7 @@ export const ProductCard = ({
   return (
     <Link href={`/${_id}`}>
       <Card className="h-[400px]">
-        <CardMedia image={image} className="h-60" />
+        <Image src={image} alt={name} width={250} height={60} />
 
         <CardContent className="flex flex-col gap-2">
           <Typography variant="subtitle1">{name}</Typography>

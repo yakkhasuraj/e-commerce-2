@@ -1,5 +1,7 @@
-import { createRandomProducts } from "@/data";
+import { PRODUCTS } from "@/configs";
+import { baseUrl } from "@/configs/env";
 import { QuantitySelector } from "@/features/products";
+import { v1 } from "@/libs/axios";
 import {
   Avatar,
   Box,
@@ -11,31 +13,46 @@ import {
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { LiaFacebookMessenger, LiaWhatsapp } from "react-icons/lia";
 
-const ProductDetailPage = () => {
-  const product = createRandomProducts();
+const getProduct = async (id) => {
+  const res = await fetch(
+    `${baseUrl}${v1}/${PRODUCTS}/${id}?populate=category&populate=`,
+    {
+      cache: "no-cache",
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error("Post fetch failed");
+  }
+
+  return res.json();
+};
+
+const ProductDetailPage = async (props) => {
+  const { result } = await getProduct(props.params.id);
 
   return (
     <Grid container spacing={2}>
       <Grid md={4} className="flex flex-col gap-2">
         <Box className="flex flex-row gap-2">
-          <Avatar src={product.image} className="w-24 h-24" variant="square" />
-          <Avatar src={product.image} className="w-96 h-96" variant="square" />
+          <Avatar src={result.image} className="w-24 h-24" variant="square" />
+          <Avatar src={result.image} className="w-96 h-96" variant="square" />
         </Box>
       </Grid>
 
       <Grid md={8} className="flex flex-col gap-4">
         <Typography variant="h6" color="primary">
-          {product.category}
+          {result.category.name}
         </Typography>
         <Divider />
         <Box className="flex flex-col gap-2">
-          <Typography variant="h6">{product.name}</Typography>
-          <Typography variant="body1">Rs {product.price}</Typography>
+          <Typography variant="h6">{result.name}</Typography>
+          <Typography variant="body1">Rs {result.price}</Typography>
         </Box>
         <Divider />
         <Box className="flex flex-col gap-2">
           <Typography variant="h6">Quantity</Typography>
-          <QuantitySelector product={product} />
+          <QuantitySelector product={result} />
         </Box>
         <Divider />
         <Box className="flex flex-col gap-2">
@@ -53,7 +70,7 @@ const ProductDetailPage = () => {
         </Box>
         <Typography variant="h6">Product details</Typography>
         <Divider />
-        <Typography variant="body1">{product.description}</Typography>
+        <Typography variant="body1">{result.description}</Typography>
       </Grid>
     </Grid>
   );

@@ -2,10 +2,10 @@ import { TWENTY_SECOND } from "@/configs";
 import { baseUrl } from "@/configs/env";
 import axios from "axios";
 
-const version = "v1";
+export const v1 = "v1";
 
 export const $axios = axios.create({
-  baseURL: `${baseUrl}${version}`,
+  baseURL: `${baseUrl}${v1}`,
   timeout: TWENTY_SECOND,
 });
 

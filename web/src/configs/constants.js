@@ -9,4 +9,5 @@ export const ACCESS_TOKEN = "access-token";
 export const AUTH = "auth";
 export const LOGIN = "login";
 export const SINGUP = "signup";
+export const PRODUCTS = "products";
 export const CART = "cart";
