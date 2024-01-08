@@ -2,7 +2,6 @@ import {
   Box,
   Card,
   CardContent,
-  CardMedia,
   Chip,
   Rating,
   Typography,
@@ -16,7 +15,13 @@ export const ProductCard = ({
   return (
     <Link href={`/${_id}`}>
       <Card className="h-[400px]">
-        <Image src={image} alt={name} width={250} height={60} />
+        <Image
+          src={image}
+          alt={name}
+          width={100}
+          height={100}
+          className="w-[550px] h-[250px]"
+        />
 
         <CardContent className="flex flex-col gap-2">
           <Typography variant="subtitle1">{name}</Typography>

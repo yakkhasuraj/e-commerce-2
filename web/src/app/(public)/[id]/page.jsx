@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
+import Image from "next/image";
 import { LiaFacebookMessenger, LiaWhatsapp } from "react-icons/lia";
 
 const getProduct = async (id) => {
@@ -35,8 +36,22 @@ const ProductDetailPage = async (props) => {
     <Grid container spacing={2}>
       <Grid md={4} className="flex flex-col gap-2">
         <Box className="flex flex-row gap-2">
-          <Avatar src={result.image} className="w-24 h-24" variant="square" />
-          <Avatar src={result.image} className="w-96 h-96" variant="square" />
+          <Image
+            src={result.image}
+            alt={result.name}
+            className="w-24 h-24"
+            width={100}
+            height={100}
+            variant="square"
+          />
+          <Image
+            src={result.image}
+            alt={result.name}
+            className="w-96 h-96"
+            width={100}
+            height={100}
+            variant="square"
+          />
         </Box>
       </Grid>
 
