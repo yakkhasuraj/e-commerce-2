@@ -1,10 +1,12 @@
 "use client";
 
-import { PRODUCTS } from "@/data";
+import { useProducts } from "@/features/products";
+import { isEmpty } from "@/utils";
 import { Box, Button, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useState } from "react";
 
 /** @type {import('@mui/x-data-grid').GridColDef[]} */
 const columns = [
@@ -28,6 +30,8 @@ const columns = [
 ];
 
 const ProductListPage = () => {
+  const [sortModel, setSortModel] = useState();
+
   const router = useRouter();
   const pathname = usePathname();
   const search = useSearchParams();
@@ -35,9 +39,25 @@ const ProductListPage = () => {
   const page = search.get("page") ?? 1;
   const pageSize = search.get("pageSize") ?? 12;
 
+  const { data, isLoading } = useProducts({
+    page,
+    limit: pageSize,
+    ...sortModel,
+  });
+
   const handlePagination = ({ page, pageSize }) => {
     router.push(`${pathname}?page=${page + 1}&pageSize=${pageSize}`);
   };
+
+  const handleSortModelChange = useCallback((sortModel) => {
+    if (isEmpty(sortModel)) {
+      setSortModel(undefined);
+      return;
+    }
+
+    const { field, sort } = sortModel[0];
+    setSortModel({ field, order: sort === "asc" ? 1 : -1 });
+  }, []);
 
   return (
     <Box className="flex flex-col gap-4">
@@ -54,10 +74,10 @@ const ProductListPage = () => {
       </Box>
 
       <DataGrid
-        rows={PRODUCTS}
+        rows={data?.results ?? []}
         columns={columns}
         getRowId={(row) => row._id}
-        rowCount={1000}
+        rowCount={data?.total}
         pageSizeOptions={[12, 24, 48, 96]}
         paginationModel={{
           page: parseInt(page) - 1,
@@ -65,6 +85,9 @@ const ProductListPage = () => {
         }}
         paginationMode="server"
         onPaginationModelChange={handlePagination}
+        sortingMode="server"
+        onSortModelChange={handleSortModelChange}
+        loading={isLoading}
       />
     </Box>
   );
