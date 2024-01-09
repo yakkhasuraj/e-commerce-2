@@ -1,7 +1,7 @@
 "use client";
 
 import { createRandomProducts } from "@/data";
-import { ProductEntry } from "@/features/products";
+import { ProductEntry, useProduct } from "@/features/products";
 import { isMongoId } from "@/utils";
 import { Box, Typography } from "@mui/material";
 import { useParams } from "next/navigation";
@@ -12,7 +12,7 @@ const ProductEntryPage = () => {
 
   const edit = isMongoId(id);
 
-  const product = createRandomProducts();
+  const { data } = useProduct(edit, id);
 
   return (
     <Box className="flex flex-col gap-4">
@@ -20,7 +20,7 @@ const ProductEntryPage = () => {
         {edit ? "Edit" : "Add"} Product
       </Typography>
 
-      <ProductEntry edit={edit} data={edit && product} />
+      <ProductEntry edit={edit} data={data?.result} />
     </Box>
   );
 };

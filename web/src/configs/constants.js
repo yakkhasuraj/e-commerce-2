@@ -10,4 +10,5 @@ export const AUTH = "auth";
 export const LOGIN = "login";
 export const SINGUP = "signup";
 export const PRODUCTS = "products";
+export const CATEGORIES = "categories";
 export const CART = "cart";

@@ -20,6 +20,9 @@ import { Controller, useForm } from "react-hook-form";
 import { MdOutlineFileUpload } from "react-icons/md";
 import { toast } from "react-toastify";
 import { productEntryValidator } from "../validators";
+import { $axios } from "@/libs/axios";
+import { PRODUCTS } from "@/configs";
+import { useCategories } from "@/features/categories";
 
 export const ProductEntry = ({ edit, data }) => {
   const [image, setImage] = useState();
@@ -44,20 +47,25 @@ export const ProductEntry = ({ edit, data }) => {
     resolver: zodResolver(productEntryValidator),
   });
 
+  const { data: categoryList } = useCategories({ page: 1, limit: 100 });
+
   useEffect(() => {
     if (!isEmpty(data)) {
+      console.log(data);
       mapIntoForm(setValue, data);
     }
   }, [data, setValue]);
 
-  const onSubmit = ({ image: _image, ...rest }) => {
+  const onSubmit = async ({ image: _image, ...rest }) => {
     try {
       const formData = new FormData();
       formData.set("image", image);
       mapIntoFormData(formData, rest);
-      for (const value of formData.values()) {
-        console.log(value, typeof value);
-      }
+
+      edit
+        ? await $axios.put(`/${PRODUCTS}/${data._id}`, formData)
+        : await $axios.post(`/${PRODUCTS}`, formData);
+
       toast(
         edit ? "Product updated successfully" : "Product created successfully",
         { type: "success" }
@@ -196,9 +204,11 @@ export const ProductEntry = ({ edit, data }) => {
               label="Category"
               {...field}
             >
-              <MenuItem value="electronic">Electronics</MenuItem>
-              <MenuItem value="clothes">Clothes</MenuItem>
-              <MenuItem value="furniture">Furniture</MenuItem>
+              {categoryList?.results.map(({ _id, name }) => (
+                <MenuItem value={_id} key={_id}>
+                  {name}
+                </MenuItem>
+              ))}
             </Select>
 
             {errors.category && (
